@@ -1,28 +1,7 @@
 <?php
 error_reporting(0);
-#引入模块
-require 'lib/phpQuery.php';
-require 'lib/QueryList.php';
-require 'core/readHtml.php';
-
-use QL\QueryList;
-
-function getList(){
-
-	$html = readHtml($url);
-
-	$rules = array(
-    //采集id为one这个元素里面的纯文本内容
-    'ip' => array('tbody>tr:lt(20)','html',"-td:gt(0) td"),
-    'port' => array('tbody>tr:lt(20)','html',"-td:gt(1) -td:eq(0) td"),
-    'country' => array('tbody>tr:lt(20)','html',"-td:gt(2) -td:lt(1) td"),
-	);
-	$data = QueryList::Query($html,$rules)->data;
-	//print_r($data);
-	return $data;
-}
-
-$list = getList();
+$url91 = ($_COOKIE["91url"] == '' || stripos($_COOKIE["91url"],'http://') == 0) ? 'http://www.91porn.com' : $_COOKIE["91url"];
+//$page91 = $_COOKIE["91page"] == '' ? 1 : $_COOKIE["91page"];
 ?>
 
 <!DOCTYPE html>
@@ -45,12 +24,12 @@ $list = getList();
 		<section id="panel">
     <div class="demo-item">
         <p class="demo-desc">设置</p>
-        <form action="91.php" method="get">
+        <form action="list.php" method="get">
                     <div class="ui-form-item ui-border-b">
                         <label>
                             91地址
                         </label>
-                        <input type="text" name="domain" placeholder="输入地址，如：http://www.91porn.com" value="http://www.91porn.com">
+                        <input type="text" name="domain" placeholder="输入地址，如：http://www.91porn.com" value="<?php echo $url91;?>">
                         
                     </div>
                     <div class="ui-form-item ui-border-b">
@@ -59,18 +38,9 @@ $list = getList();
                         </label>
                         <input placeholder="页码" name="page" type="number" value="1">
                     </div>
-                    <div class="ui-form-item ui-border-b">
-                        <label>
-                            代理服务器
-                        </label>
-                        <div class="ui-select">
-                            <select name="proxy">
-                                <option>无</option>
-                                <?php foreach ($list as $key => $value) {
-                                	echo '<option value="'.$value["ip"].':'.$value["port"].'">'.$value["ip"].'['.$value["country"].']</option>';
-                                } ?>
-                            </select>
-                        </div>
+                    
+                    <div class="ui-tips ui-tips-info">
+                        <i></i><span>设置可用域名和页码可直接访问</span>
                     </div>
                     <div class="ui-btn-wrap">
 		                <button type="submit" class="ui-btn-lg ui-btn-primary">
@@ -79,6 +49,12 @@ $list = getList();
 		            </div>
                 </form>
     </div>
+
+        <p class="demo-desc">关于</p>
+        <div class="ui-whitespace">
+                <p class="ui-txt-default">本站开源：源码在<a target="_blank" href="https://github.com/yhf7952/91pornMobile">GitHub</a></p>
+                <p class="ui-txt-default">更多新鲜好玩的欢迎关注我的博客：<a href="https://yantuz.cn/">岩兔站</a> 或者<a target="_blank" href="https://weibo.com/yztop">新浪微博</a></p>
+            </div>
 		</section>
                 
 		
